@@ -23,7 +23,7 @@ market_list = market_info['result']
 for market in market_list:
 	market_name = market['MarketName']
 	# the bittrex api does not appear to have getticker information for BTC-GAM, as such an if statement is used to avoid errors
-	if market_name != "BTC-GAM":
+	try:
 		price_response = requests.get(url_ticker + "?market=" + market_name)
 		if market_response.status_code == 200:
 			price_info = price_response.json()
@@ -32,3 +32,5 @@ for market in market_list:
 		else:
 			print('Status:', response.status_code, 'Problem with the request. Exiting.')
 			exit()
+	except TypeError:
+			print("Skip: " + market_name)
